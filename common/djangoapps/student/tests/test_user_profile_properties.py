@@ -2,6 +2,7 @@
 
 import datetime
 import ddt
+from django.conf import settings
 from django.test import TestCase
 
 from student.models import UserProfile
@@ -41,6 +42,13 @@ class UserProfilePropertiesTest(TestCase):
         self.profile.gender = gender
         self.profile.save()
 
+    def _set_dropdown(self, dropdown):
+        """
+        Helper method that sets the custom dropdown for the specified user.
+        """
+        self.profile.dropdown = dropdown
+        self.profile.save()
+
     @ddt.data(0, 1, 13, 20, 100)
     def test_age(self, age):
         """Verify the age calculated correctly."""
@@ -64,6 +72,13 @@ class UserProfilePropertiesTest(TestCase):
     def test_display_level_of_education_none_set(self):
         """Verify nothing is returned."""
         self.assertIsNone(self.profile.level_of_education_display)
+
+    def test_display_dropdown(self):
+        # pylint: disable=unused-variable
+        code, choice = settings.REGISTRATION_DROPDOWN_CHOICES[0]
+        self._set_level_of_education(code)
+
+        self.assertEqual(self.profile.dropdown, code)
 
     @ddt.data(*UserProfile.GENDER_CHOICES)
     @ddt.unpack

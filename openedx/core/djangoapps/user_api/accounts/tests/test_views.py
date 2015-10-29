@@ -311,7 +311,7 @@ class TestAccountAPI(UserAPITestCase):
             self.assertEqual(16, len(data))
             self.assertEqual(self.user.username, data["username"])
             self.assertEqual(self.user.first_name + " " + self.user.last_name, data["name"])
-            for empty_field in ("year_of_birth", "level_of_education", "mailing_address", "bio"):
+            for empty_field in ("year_of_birth", "level_of_education", "dropdown", "mailing_address", "bio"):
                 self.assertIsNone(data[empty_field])
             self.assertIsNone(data["country"])
             self.assertEqual("m", data["gender"])
